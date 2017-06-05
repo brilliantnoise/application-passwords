@@ -260,7 +260,9 @@ class Application_Passwords {
 		$user = self::authenticate( $input_user, $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'] );
 
 		if ( $user instanceof WP_User ) {
-			return $user->ID;
+			if ( is_user_member_of_blog($user->ID, get_current_blog_id()) ) {
+				return $user->ID;
+			}
 		}
 
 		// If it wasn't a user what got returned, just pass on what we had received originally.
